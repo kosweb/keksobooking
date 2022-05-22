@@ -1,9 +1,17 @@
 'use strict'
 
-const MIN_COORDINATES = 50;
-const MAX_COORDINATES = 1000;
+const MIN_COORDI_ADDRESS = 50;
+const MAX_COORDI_ADDRESS = 1000;
 const MIN_PRICE = 1000;
 const MAX_PRICE = 100000;
+const MIN_ROOMS = 1;
+const MAX_ROOMS = 4;
+const MIN_GUESTS = 2;
+const MAX_GUESTS = 6;
+const MIX_X_COORDINATES = 50;
+const MAX_X_COORDINATES = 1150;
+const MIX_Y_COORDINATES = 130;
+const MAX_Y_COORDINATES = 630;
 const map = document.querySelector('.map').classList.remove('map--faded');
 const mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
 const mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
@@ -25,8 +33,9 @@ var checkTimes = ['12:00', '13:00', '14:00'];
 var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photoArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
-const getRandomArbitrary = (min, max) => {
-  return Math.floor(Math.random() * (max - min) + min);
+function getRandomInteger(min, max) {
+  let rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
 }
 
 const getRandomIndex = (arr) => {
@@ -51,19 +60,19 @@ const getMapOffers = () => {
 			},
 			offer: {
 				title: offers[i],
-				address: `${getRandomArbitrary(MIN_COORDINATES, MAX_COORDINATES + 1)}, ${getRandomArbitrary(MIN_COORDINATES, MAX_COORDINATES + 1)}`,
-				price: getRandomArbitrary(MIN_PRICE, MAX_PRICE + 1),
+				address: `${getRandomInteger(MIN_COORDI_ADDRESS, MAX_COORDI_ADDRESS)}, ${getRandomInteger(MIN_COORDI_ADDRESS, MAX_COORDI_ADDRESS)}`,
+				price: getRandomInteger(MIN_PRICE, MAX_PRICE),
 				type: getRandomIndex(houseTypes),
-				rooms: getRandomArbitrary(1, 5),
-				guests: getRandomArbitrary(2, 6),
+				rooms: getRandomInteger(MIN_ROOMS, MAX_ROOMS),
+				guests: getRandomInteger(MIN_GUESTS, MAX_GUESTS),
 				checkin: getRandomIndex(checkTimes),
 				checkout: getRandomIndex(checkTimes),
-				features: featuresArr.slice(getRandomArbitrary(0, 2), getRandomArbitrary(3, 7)),
+				features: featuresArr.slice(getRandomInteger(0, 2), getrandomInteger(3, 6)),
 				description: '',
 				photos: shuffle(photoArr),
 				location: {
-					x: getRandomArbitrary(50, 1150),
-					y: getRandomArbitrary(130, 630)
+					x: getRandomInteger(MIX_X_COORDINATES, MAX_X_COORDINATES),
+					y: getRandomInteger(MIX_Y_COORDINATES, MAX_Y_COORDINATES)
 				}
 			}
 		}
