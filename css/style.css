@@ -700,3 +700,16 @@ textarea:focus {
 .footer-social-item-vk {
   background-position: -10px -10px;
 }
+
+.popup__photos {
+	display: flex;
+	justify-content: space-between;
+}
+
+.popup__photos--item {
+	width: 30%;
+}
+
+.popup__photos--img {
+	width: 100%;
+}
