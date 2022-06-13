@@ -1,17 +1,17 @@
 'use strict'
 
-const MIN_PRICE = 1000;
-const MAX_PRICE = 100000;
-const MIN_ROOMS = 1;
-const MAX_ROOMS = 4;
-const MIN_GUESTS = 2;
-const MAX_GUESTS = 6;
-const PIN_WIDTH = 44 / 2;
-const PIN_HEIGHT = 40 + 18;
-const MIN_X_COORDINATES = 50;
-const MAX_X_COORDINATES = 1150;
-const MIN_Y_COORDINATES = 130;
-const MAX_Y_COORDINATES = 630;
+const minPrice = 1000;
+const maxPrice = 5000;
+const minRooms = 1;
+const maxRooms = 4;
+const minGuests = 2;
+const maxGuests = 6;
+const pinWidth = 44 / 2;
+const pinHeight = 40 + 18;
+const minXcoordinates = 50;
+const maxXcoordinates = 1150;
+const minYcoordinates = 130;
+const maxYcoordinates = 630;
 const map = document.querySelector('.map');
 map.classList.remove('map--faded');
 const mapFilterContainer = document.querySelector('.map__filters-container');
@@ -38,7 +38,7 @@ const photoArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://
 function getRandomInt(min, max) {
   let rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
-}
+};
 
 const getRandomIndex = (arr) => {
 	return arr[Math.floor(Math.random() * (arr.length - 1))];
@@ -50,15 +50,15 @@ const shuffle = (array) => {
     [array[i], array[j]] = [array[j], array[i]];
   }
 	return array;
-}
+};
 
 const getMapOffers = () => {
 	let newArr = [];
 
-	for (let i = 0; i < 7; i++) {
+	for (let i = 0; i < 8; i++) {
 
-		let getXcoordinate = getRandomInt(MIN_X_COORDINATES, MAX_X_COORDINATES) + PIN_WIDTH;
-		let getYcoordinate = getRandomInt(MIN_Y_COORDINATES, MAX_Y_COORDINATES) + PIN_HEIGHT;
+		let getXcoordinate = getRandomInt(minXcoordinates, maxXcoordinates) + pinWidth;
+		let getYcoordinate = getRandomInt(minYcoordinates, maxYcoordinates) + pinHeight;
 
 		let newObj = {
 			author: {
@@ -67,10 +67,10 @@ const getMapOffers = () => {
 			offer: {
 				title: offers[i],
 				address: `${getXcoordinate}, ${getYcoordinate}`,
-				price: getRandomInt(MIN_PRICE, MAX_PRICE),
+				price: getRandomInt(minPrice, maxPrice),
 				type: getRandomIndex(houseTypes),
-				rooms: getRandomInt(MIN_ROOMS, MAX_ROOMS),
-				guests: getRandomInt(MIN_GUESTS, MAX_GUESTS),
+				rooms: getRandomInt(minRooms, maxRooms),
+				guests: getRandomInt(minGuests, maxGuests),
 				checkin: getRandomIndex(checkTimes),
 				checkout: getRandomIndex(checkTimes),
 				features: featuresArr.slice(getRandomInt(0, 2), getRandomInt(3, 6)),
@@ -98,11 +98,10 @@ const renderMapCard = (arr) => {
 	mapCard.querySelector('.map__card-avatar').src = arr.author.avatar;
 	mapCard.querySelector('.popup__title').textContent = arr.offer.title;
 	mapCard.querySelector('.popup__text--address').textContent = arr.offer.address;
-	mapCard.querySelector('.popup__text--price').textContent = arr.offer.price;
+	mapCard.querySelector('.popup__price').textContent = arr.offer.price;
 	mapCard.querySelector('.popup__type').textContent = arr.offer.type;
 	mapCard.querySelector('.popup__text--capacity').textContent = `${arr.offer.rooms} комнаты для ${arr.offer.guests} гостей`;
 	mapCard.querySelector('.popup__text--time').textContent = `Заезд после ${arr.offer.checkin}, выезд до ${arr.offer.checkout}`;
-
 
 	features.forEach((feature, i) => {
 		if (feature.dataset.set !== arr.offer.features[i]) {
@@ -124,32 +123,26 @@ const renderMapCard = (arr) => {
   return mapCard;
 };
 
-const renderMapPin = (arr) => {
-	const mapPin = mapPinTemplate.cloneNode('true');
-
-  mapPin.style = `left: ${arr.offer.location.x}px; top: ${arr.offer.location.y}px;`;
-  mapPin.querySelector('.map__pin-avatar').src = arr.author.avatar;
-  mapPin.querySelector('.map__pin-avatar').alt = arr.offer.title;
-
-  return mapPin;
+const appendMapCard = (arr) => {
+	const fragment = document.createDocumentFragment();
+	fragment.appendChild(renderMapCard(arr[0]));
+	return map.appendChild(fragment);
 };
 
+// appendMapCard(mapOffers);
 
-const appendMapPin = () => {
+const renderMapPins = () => {
 	const fragment = document.createDocumentFragment();
 
-	for (let i = 0; i < mapOffers.length; i++) {
-		fragment.appendChild(renderMapPin(mapOffers[i]));
-	};
+	mapOffers.forEach((mapOffer) => {
+		const mapPinClone = mapPinTemplate.cloneNode('true');
+		mapPinClone.style = `left: ${mapOffer.offer.location.x}px; top: ${mapOffer.offer.location.y}px;`;
+		mapPinClone.querySelector('.map__pin-avatar').src = mapOffer.author.avatar;
+		mapPinClone.querySelector('.map__pin-avatar').alt = mapOffer.offer.title;
+		fragment.appendChild(mapPinClone);
+	});
 
-	return mapPins.appendChild(fragment);
-}
+	mapPins.appendChild(fragment);
+};
 
-const appendMapCard = () => {
-	const fragment = document.createDocumentFragment();
-	fragment.appendChild(renderMapCard(mapOffers[0]));
-	return map.appendChild(fragment);
-}
-
-appendMapPin();
-appendMapCard();
+renderMapPins();
