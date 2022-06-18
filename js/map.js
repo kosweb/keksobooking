@@ -1,4 +1,4 @@
-'use strict'
+import {getRandomIndex, getRandomInt, shuffle} from './util.js';
 
 const minPrice = 1000;
 const maxPrice = 5000;
@@ -34,23 +34,6 @@ const houseTypes = ['palace', 'flat', 'house', 'bungalo'];
 const checkTimes = ['12:00', '13:00', '14:00'];
 const featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const photoArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-
-function getRandomInt(min, max) {
-  let rand = min + Math.random() * (max + 1 - min);
-  return Math.floor(rand);
-};
-
-const getRandomIndex = (arr) => {
-	return arr[Math.floor(Math.random() * (arr.length - 1))];
-};
-
-const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-	return array;
-};
 
 const getMapOffers = () => {
 	let newArr = [];
@@ -129,7 +112,7 @@ const appendMapCard = (arr) => {
 	return map.appendChild(fragment);
 };
 
-// appendMapCard(mapOffers);
+appendMapCard(mapOffers);
 
 const renderMapPins = () => {
 	const fragment = document.createDocumentFragment();
