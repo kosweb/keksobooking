@@ -1,4 +1,4 @@
-import {getRandomIndex, getRandomInt, shuffle} from './util.js';
+import { getRandomIndex, getRandomInt, shuffle } from './util.js';
 
 const minPrice = 1000;
 const maxPrice = 5000;
@@ -12,12 +12,11 @@ const minXcoordinates = 50;
 const maxXcoordinates = 1150;
 const minYcoordinates = 130;
 const maxYcoordinates = 630;
-const map = document.querySelector('.map');
-map.classList.remove('map--faded');
-const mapFilterContainer = document.querySelector('.map__filters-container');
 const mapTemplate = document.querySelector('template').content.querySelector('.map__card');
 const mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
+const map = document.querySelector('.map');
 const mapPins = document.querySelector('.map__pins');
+const mapFilterContainer = document.querySelector('.map__filters-container');
 
 const offers = [
 	'Большая уютная квартира',
@@ -43,6 +42,8 @@ const getMapOffers = () => {
 		let getXcoordinate = getRandomInt(minXcoordinates, maxXcoordinates) + pinWidth;
 		let getYcoordinate = getRandomInt(minYcoordinates, maxYcoordinates) + pinHeight;
 
+		let shuffleArr = shuffle(photoArr);
+
 		let newObj = {
 			author: {
 				avatar: `img/avatars/user0${i+1}.png`
@@ -58,7 +59,7 @@ const getMapOffers = () => {
 				checkout: getRandomIndex(checkTimes),
 				features: featuresArr.slice(getRandomInt(0, 2), getRandomInt(3, 6)),
 				description: '',
-				photos: shuffle(photoArr),
+				photos: shuffleArr,
 				location: {
 					x: getXcoordinate,
 					y: getYcoordinate
@@ -108,17 +109,16 @@ const renderMapCard = (arr) => {
 
 const appendMapCard = (arr) => {
 	const fragment = document.createDocumentFragment();
-	fragment.appendChild(renderMapCard(arr[0]));
-	return map.appendChild(fragment);
+	fragment.appendChild(renderMapCard(arr));
+	return map.insertBefore(fragment, mapFilterContainer);
 };
-
-appendMapCard(mapOffers);
 
 const renderMapPins = () => {
 	const fragment = document.createDocumentFragment();
 
 	mapOffers.forEach((mapOffer) => {
 		const mapPinClone = mapPinTemplate.cloneNode('true');
+		mapPinClone.classList.add('map__pin--user');
 		mapPinClone.style = `left: ${mapOffer.offer.location.x}px; top: ${mapOffer.offer.location.y}px;`;
 		mapPinClone.querySelector('.map__pin-avatar').src = mapOffer.author.avatar;
 		mapPinClone.querySelector('.map__pin-avatar').alt = mapOffer.offer.title;
@@ -128,4 +128,5 @@ const renderMapPins = () => {
 	mapPins.appendChild(fragment);
 };
 
-renderMapPins();
+export { renderMapPins, appendMapCard };
+export { mapOffers };

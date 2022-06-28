@@ -15,4 +15,12 @@ const shuffle = (array) => {
 	return array;
 };
 
-export {getRandomIndex, getRandomInt, shuffle};
+const isEscEvent = (evt) => {
+	return evt.key === ('Escape' || 'Esc');
+};
+
+const isEnterEvent = (evt) => {
+	return evt.key === 'Enter';
+};
+
+export { getRandomIndex, getRandomInt, shuffle, isEscEvent, isEnterEvent };
