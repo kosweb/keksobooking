@@ -1,4 +1,4 @@
-import { isEscEvent, isEnterEvent } from "./util.js";
+import { isEscEvent } from "./util.js";
 import { renderMapPins, appendMapCard, mapOffers } from "./map.js";
 
 const onPopupEscPress = (evt) => {
@@ -21,7 +21,7 @@ formFieldsets.forEach(el => {
 
 const openMap = () => {
 	map.classList.remove('map--faded');
-	noticeForm.classList.toggle('notice__form--disabled');
+	noticeForm.classList.remove('notice__form--disabled');
 	formFieldsets.forEach(el => {
 		el.disabled = !(el.disabled);
 	});
@@ -56,7 +56,7 @@ const runPins = () => {
 	userMapPins.forEach((el, i) => {
 		el.addEventListener('click', (evt) => {
 			evt.preventDefault();
-			// checkMapCards();
+			delDomMapCard();
 			appendMapCard(mapOffers[i]);
 			document.addEventListener('keydown', onPopupEscPress);
 			closeMapCard();

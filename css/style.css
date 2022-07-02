@@ -69,6 +69,10 @@ textarea {
   background-color: white;
 }
 
+textarea {
+	resize: none;
+}
+
 input[type=text]:hover,
 input[type=number]:hover,
 select:hover,
@@ -189,6 +193,10 @@ textarea:focus {
 
   position: relative;
   flex-grow: 1;
+}
+
+.map__pins button {
+	cursor: pointer;
 }
 
 .map__pin {
@@ -398,6 +406,7 @@ textarea:focus {
   background: none;
   border: 0;
   font-size: 0;
+	cursor: pointer;
 }
 
 .popup__close:active {
