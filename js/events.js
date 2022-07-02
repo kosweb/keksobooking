@@ -1,11 +1,10 @@
 import { isEscEvent, isEnterEvent } from "./util.js";
-import { renderMapPins, appendMapCard } from "./map.js";
-import { mapOffers } from "./map.js";
+import { renderMapPins, appendMapCard, mapOffers } from "./map.js";
 
 const onPopupEscPress = (evt) => {
 	if (isEscEvent(evt)) {
 		evt.preventDefault();
-		closeUserModal();
+		delDomMapCard();
 	}
 };
 
@@ -34,22 +33,33 @@ const openMap = () => {
 	}
 }
 
-const checkMapCards = () => {
+const delDomMapCard = () => {
 	for (let j = 0; j < map.childNodes.length; j++) {
 		if (map.childNodes[j].className === "map__card popup") {
 			map.childNodes[j].remove();
+			document.removeEventListener('keydown', onPopupEscPress);
 		}
 	}
+};
+
+const closeMapCard = () => {
+	map.addEventListener('click', (evt) => {
+		if(evt.target.classList.contains('popup__close')) {
+			delDomMapCard();
+		}
+	});
 };
 
 const runPins = () => {
 	const userMapPins = document.querySelectorAll('.map__pin--user');
 
 	userMapPins.forEach((el, i) => {
-		el.addEventListener('mouseup', (evt) => {
+		el.addEventListener('click', (evt) => {
 			evt.preventDefault();
-			checkMapCards();
+			// checkMapCards();
 			appendMapCard(mapOffers[i]);
+			document.addEventListener('keydown', onPopupEscPress);
+			closeMapCard();
 		})
 	});
 };

@@ -128,5 +128,4 @@ const renderMapPins = () => {
 	mapPins.appendChild(fragment);
 };
 
-export { renderMapPins, appendMapCard };
-export { mapOffers };
+export { renderMapPins, appendMapCard, mapOffers };
