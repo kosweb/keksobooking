@@ -116,16 +116,16 @@ const appendMapCard = (arr) => {
 const renderMapPins = () => {
 	const fragment = document.createDocumentFragment();
 
-	mapOffers.forEach((mapOffer) => {
+	mapOffers.forEach((el) => {
 		const mapPinClone = mapPinTemplate.cloneNode('true');
 		mapPinClone.classList.add('map__pin--user');
-		mapPinClone.style = `left: ${mapOffer.offer.location.x}px; top: ${mapOffer.offer.location.y}px;`;
-		mapPinClone.querySelector('.map__pin-avatar').src = mapOffer.author.avatar;
-		mapPinClone.querySelector('.map__pin-avatar').alt = mapOffer.offer.title;
+		mapPinClone.style = `left: ${el.offer.location.x}px; top: ${el.offer.location.y}px;`;
+		mapPinClone.querySelector('.map__pin-avatar').src = el.author.avatar;
+		mapPinClone.querySelector('.map__pin-avatar').alt = el.offer.title;
 		fragment.appendChild(mapPinClone);
 	});
 
-	mapPins.appendChild(fragment);
+	return mapPins.appendChild(fragment);
 };
 
 export { renderMapPins, appendMapCard, mapOffers };

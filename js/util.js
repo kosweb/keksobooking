@@ -23,4 +23,4 @@ const isEnterEvent = (evt) => {
 	return evt.key === 'Enter';
 };
 
-export { getRandomIndex, getRandomInt, shuffle, isEscEvent, isEnterEvent };
+export { getRandomIndex, getRandomInt, shuffle, isEscEvent };
