@@ -10,10 +10,11 @@ const onPopupEscPress = (evt) => {
 
 const map = document.querySelector('.map');
 const mapPinMain = document.querySelector('.map__pin--main');
+const mainPinHalfWidth = Math.floor(65 / 2);
+const mainPinfullHeight = 65 + 20;
 const noticeForm = document.querySelector('.notice__form');
 const formFieldsets = noticeForm.querySelectorAll('fieldset');
 const addressField = document.getElementById('address');
-const startAddress = `${mapPinMain.offsetLeft}, ${mapPinMain.offsetTop}`;
 
 formFieldsets.forEach(el => {
 	el.disabled = true;
@@ -26,11 +27,7 @@ const openMap = () => {
 		el.disabled = !(el.disabled);
 	});
 
-	if (addressField.value) {
-		addressField.value = '';
-	} else {
-		addressField.value = startAddress;
-	}
+	addressField.value = `${mapPinMain.offsetLeft}, ${mapPinMain.offsetTop}`;
 }
 
 const delDomMapCard = () => {
@@ -66,11 +63,12 @@ const runPins = () => {
 
 mapPinMain.addEventListener('click', (evt) => {
 	evt.preventDefault();
-	openMap();
 
-	// если нажать повторно, выдаёт ошибку при нажатии на пины
-	renderMapPins();
-	runPins();
+	if (map.classList.contains('map--faded')) {
+		openMap();
+		renderMapPins();
+		runPins();
+	}
 });
 
 // обработчики и валидация формы
@@ -85,6 +83,7 @@ const roomNumberSelect = document.getElementById('room_number');
 const roomNumberOptions = roomNumberSelect.querySelectorAll('option');
 const roomCapacitySelect = document.getElementById('capacity');
 const roomCapacityOptions = roomCapacitySelect.querySelectorAll('option');
+const formReset = document.querySelector('.form__reset');
 
 selectTypeHouse.addEventListener('change', () => {
 	for (let option of selectTypeHouseOptions) {
@@ -179,4 +178,58 @@ roomNumberSelect.addEventListener('change', () => {
 			});
 		}
 	});
+});
+
+formReset.addEventListener('click', (evt) => {
+	evt.preventDefault();
+	noticeForm.reset();
+	addressField.value = `${mapPinMain.offsetLeft + mainPinHalfWidth}, ${mapPinMain.offsetTop + mainPinfullHeight}`;
+});
+
+// MAIN PIN DRAG EVENTS
+
+const mapPinsField = document.querySelector('.map__pins');
+
+mapPinMain.addEventListener('mousedown', (evt) => {
+	evt.preventDefault();
+
+	let startCoords = {
+		x: evt.clientX,
+		y: evt.clientY
+	};
+
+	let onMouseMove = (moveEvt) => {
+		moveEvt.preventDefault();
+
+		let shift = {
+			x: startCoords.x - moveEvt.clientX,
+			y: startCoords.y - moveEvt.clientY
+		};
+
+		startCoords = {
+			x: moveEvt.clientX,
+			y: moveEvt.clientY
+		};
+
+		mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+		mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+
+
+		if (mapPinMain.offsetTop <= 100) {
+			mapPinMain.style.top = '101px';
+		} else if (mapPinMain.offsetTop >= 655) {
+			mapPinMain.style.top = '655px';
+		}
+	};
+
+	let onMouseUp = (upEvt) => {
+		upEvt.preventDefault();
+
+		addressField.value = `${mapPinMain.offsetLeft + mainPinHalfWidth}, ${mapPinMain.offsetTop + mainPinfullHeight}`;
+		mapPinsField.removeEventListener('mousemove', onMouseMove);
+		document.removeEventListener('mouseup', onMouseUp);
+	};
+
+	mapPinsField.addEventListener('mousemove', onMouseMove);
+	document.addEventListener('mouseup', onMouseUp);
 });
