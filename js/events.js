@@ -1,6 +1,4 @@
-import { isEscEvent, sendRequest } from "./util.js";
-import { appendMapCard } from "./map.js";
-import { useLeafletMap } from "./leaflet.js";
+import { isEscEvent } from "./util.js";
 
 const mapForm = document.querySelector('.map__filters');
 const mapFormSelects = mapForm.querySelectorAll('.map__filter');
@@ -8,8 +6,7 @@ const mapFormFeatures = mapForm.querySelector('.map__features');
 const adForm = document.querySelector('.ad-form');
 const adFormFieldsets = adForm.querySelectorAll('fieldset');
 const addressField = document.getElementById('address');
-const getRequestURL = 'https://24.javascript.pages.academy/keksobooking/data';
-let bookingData;
+
 
 const onPopupEscPress = (evt) => {
 	if (isEscEvent(evt)) {
@@ -40,14 +37,6 @@ const formEnabled = () => {
 		mapFormFeatures.disabled = false;
 };
 
-
-sendRequest('GET', getRequestURL)
-.then(data => {
-	bookingData = data;
-	useLeafletMap(addressField, bookingData);
-	formEnabled();
-})
-.catch(err => console.log(err));
 
 // обработчики и валидация формы
 const selectTypeHouse = document.getElementById('type');
@@ -163,72 +152,4 @@ formReset.addEventListener('click', (evt) => {
 	priceInput.min = '1000';
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// MAIN PIN DRAG EVENTS
-
-// const mapPinsField = document.querySelector('.map__pins');
-
-// mapPinMain.addEventListener('mousedown', (evt) => {
-// 	evt.preventDefault();
-
-// 	let startCoords = {
-// 		x: evt.clientX,
-// 		y: evt.clientY
-// 	};
-
-// 	let onMouseMove = (moveEvt) => {
-// 		moveEvt.preventDefault();
-
-// 		let shift = {
-// 			x: startCoords.x - moveEvt.clientX,
-// 			y: startCoords.y - moveEvt.clientY
-// 		};
-
-// 		startCoords = {
-// 			x: moveEvt.clientX,
-// 			y: moveEvt.clientY
-// 		};
-
-// 		mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
-// 		mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-
-
-// 		if (mapPinMain.offsetTop <= 100) {
-// 			mapPinMain.style.top = '101px';
-// 		} else if (mapPinMain.offsetTop >= 655) {
-// 			mapPinMain.style.top = '655px';
-// 		}
-// 	};
-
-// 	let onMouseUp = (upEvt) => {
-// 		upEvt.preventDefault();
-
-// 		addressField.value = `${mapPinMain.offsetLeft + mainPinHalfWidth}, ${mapPinMain.offsetTop + mainPinfullHeight}`;
-// 		mapPinsField.removeEventListener('mousemove', onMouseMove);
-// 		document.removeEventListener('mouseup', onMouseUp);
-// 	};
-
-// 	mapPinsField.addEventListener('mousemove', onMouseMove);
-// 	document.addEventListener('mouseup', onMouseUp);
-// });
+export { formEnabled };
