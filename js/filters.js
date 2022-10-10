@@ -65,22 +65,22 @@ const filterData = (data, filterOptions) => {
 };
 
 const filter = (data) => {
-	houseType.addEventListener('change', (evt) => {
+	houseType.addEventListener('change', () => {
 		filterOptions.houseType = houseType.value;
 		const newData = filterData(data, filterOptions);
 		renderPins(newData);
 	})
-	housePrice.addEventListener('change', (evt) => {
+	housePrice.addEventListener('change', () => {
 		filterOptions.housePrice = housePrice.value;
 		const newData = filterData(data, filterOptions);
 		renderPins(newData);
 	})
-	houseRooms.addEventListener('change', (evt) => {
+	houseRooms.addEventListener('change', () => {
 		filterOptions.houseRooms = houseRooms.value;
 		const newData = filterData(data, filterOptions);
 		renderPins(newData);
 	})
-	houseGuests.addEventListener('change', (evt) => {
+	houseGuests.addEventListener('change', () => {
 		filterOptions.houseGuests = houseGuests.value;
 		const newData = filterData(data, filterOptions);
 		renderPins(newData);
